@@ -44,13 +44,13 @@ contract ChatOracle is IOracle {
     mapping(uint => string) public promptType;
 
     // @notice Mapping of prompt ID to the LLM configuration
-    mapping(uint => IOracle.LlmRequest) public llmConfigurations;
+    // mapping(uint => IOracle.LlmRequest) public llmConfigurations;
 
     // @notice Mapping of prompt ID to the OpenAI configuration
     mapping(uint => IOracle.OpenAiRequest) public openAiConfigurations;
 
     // @notice Mapping of prompt ID to the Groq configuration
-    mapping(uint => IOracle.GroqRequest) public groqConfigurations;
+    // mapping(uint => IOracle.GroqRequest) public groqConfigurations;
 
     // @notice Total number of prompts
     uint public promptsCount;
@@ -216,44 +216,6 @@ contract ChatOracle is IOracle {
         );
     }
 
-    // @notice Creates a new LLM call
-    // @param promptCallbackId The callback ID for the LLM call
-    // @return The ID of the created prompt
-    function createLlmCall(uint promptCallbackId, IOracle.LlmRequest memory request) public returns (uint) {
-        uint promptId = promptsCount;
-        callbackAddresses[promptId] = msg.sender;
-        promptCallbackIds[promptId] = promptCallbackId;
-        isPromptProcessed[promptId] = false;
-        promptType[promptId] = promptTypes.defaultType;
-
-        promptsCount++;
-
-        llmConfigurations[promptId] = request;
-        emit PromptAdded(promptId, promptCallbackId, msg.sender);
-
-        return promptId;
-    }
-
-    // @notice Adds a response to a prompt
-    // @param promptId The ID of the prompt
-    // @param promptCallBackId The callback ID for the prompt
-    // @param response The LLM response
-    // @param errorMessage Any error message
-    // @dev Called by teeML oracle
-    function addResponse(
-        uint promptId,
-        uint promptCallBackId,
-        IOracle.LlmResponse memory response,
-        string memory errorMessage
-    ) public onlyWhitelisted {
-        require(!isPromptProcessed[promptId], "Prompt already processed");
-        isPromptProcessed[promptId] = true;
-        IChatGpt(callbackAddresses[promptId]).onOracleLlmResponse(
-            promptCallBackId,
-            response,
-            errorMessage
-        );
-    }
 
     // @notice Marks a prompt as processed
     // @param promptId The ID of the prompt
@@ -395,45 +357,8 @@ contract ChatOracle is IOracle {
         isPromptProcessed[promptId] = true;
     }
 
-    // @notice Creates a new Groq LLM call
-    // @param promptCallbackId The callback ID for the LLM call
-    // @param config The Groq request configuration
-    // @return The ID of the created prompt
-    function createGroqLlmCall(uint promptCallbackId, IOracle.GroqRequest memory config) public returns (uint) {
-        uint promptId = promptsCount;
-        callbackAddresses[promptId] = msg.sender;
-        promptCallbackIds[promptId] = promptCallbackId;
-        isPromptProcessed[promptId] = false;
-        promptType[promptId] = promptTypes.groq;
 
-        promptsCount++;
 
-        groqConfigurations[promptId] = config;
-        emit PromptAdded(promptId, promptCallbackId, msg.sender);
-
-        return promptId;
-    }
-
-    // @notice Adds a response to a Groq LLM call
-    // @param promptId The ID of the prompt
-    // @param promptCallBackId The callback ID for the prompt
-    // @param response The Groq response
-    // @param errorMessage Any error message
-    // @dev Called by teeML oracle
-    function addGroqResponse(
-        uint promptId,
-        uint promptCallBackId,
-        IOracle.GroqResponse memory response,
-        string memory errorMessage
-    ) public onlyWhitelisted {
-        require(!isPromptProcessed[promptId], "Prompt already processed");
-        isPromptProcessed[promptId] = true;
-        IChatGpt(callbackAddresses[promptId]).onOracleGroqLlmResponse(
-            promptCallBackId,
-            response,
-            errorMessage
-        );
-    }
 
     // @notice Marks a Groq prompt as processed
     // @param promptId The ID of the prompt

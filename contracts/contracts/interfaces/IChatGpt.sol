@@ -16,11 +16,6 @@ interface IChatGpt {
         string memory errorMessage
     ) external;
 
-    function onOracleLlmResponse(
-        uint callbackId,
-        IOracle.LlmResponse memory response,
-        string memory errorMessage
-    ) external;
 
     function onOracleKnowledgeBaseQueryResponse(
         uint callbackId,
@@ -46,9 +41,5 @@ interface IChatGpt {
         string memory errorMessage
     ) external;
 
-    function onOracleGroqLlmResponse(
-        uint callbackId,
-        IOracle.GroqResponse memory response,
-        string memory errorMessage
-    ) external;
+
 }

@@ -13,10 +13,10 @@ const galadrielDevnet = []
 if (process.env.PRIVATE_KEY_GALADRIEL) {
   galadrielDevnet.push(process.env.PRIVATE_KEY_GALADRIEL)
 }
-const localhostPrivateKeys = []
-if (process.env.PRIVATE_KEY_LOCALHOST) {
-  localhostPrivateKeys.push(process.env.PRIVATE_KEY_LOCALHOST)
-}
+// const localhostPrivateKeys = []
+// if (process.env.PRIVATE_KEY_LOCALHOST) {
+//   localhostPrivateKeys.push(process.env.PRIVATE_KEY_LOCALHOST)
+// }
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -38,11 +38,11 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337,
     },
-    localhost: {
-      chainId: 1337,
-      url: "http://127.0.0.1:8545",
-      accounts: localhostPrivateKeys,
-    }
+    // localhost: {
+    //   chainId: 1337,
+    //   url: "http://127.0.0.1:8545",
+    //   accounts: localhostPrivateKeys,
+    // }
   },
 };
 

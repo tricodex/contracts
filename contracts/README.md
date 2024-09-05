@@ -7,7 +7,7 @@
 ```
 cd contracts
 cp template.env .env
-npm install 
+npm install
 ```
 
 Modify .env and add your private key for relevant network  

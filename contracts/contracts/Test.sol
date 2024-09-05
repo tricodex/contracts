@@ -53,42 +53,6 @@ contract Test {
         return currentId;
     }
 
-    function callLLM(string memory model, string memory message) public returns (uint i) {
-        uint currentId = callsCount;
-        callsCount = currentId + 1;
-
-        llmMessage = IOracle.Message({
-            role: "user",
-            content: new IOracle.Content[](1)
-        });
-        llmMessage.content[0] = IOracle.Content({
-            contentType: "text",
-            value: message
-        });
-        lastResponse = "";
-        lastError = "";
-    
-        IOracle(oracleAddress).createLlmCall(
-            currentId,
-            IOracle.LlmRequest({
-                model: model,
-                frequencyPenalty : 21, // > 20 for null
-                logitBias : "", // empty str for null
-                maxTokens : 1000, // 0 for null
-                presencePenalty : 21, // > 20 for null
-                responseFormat : "{\"type\":\"text\"}",
-                seed : 0, // null
-                stop : "", // null
-                temperature : 10, // Example temperature (scaled up, 10 means 1.0), > 20 means null
-                topP : 101, // Percentage 0-100, > 100 means null
-                tools : "",
-                toolChoice : "", // "none" or "auto"
-                user : "" // null
-            })
-        );
-
-        return currentId;
-    }
 
     function callOpenAiLLM(string memory model, string memory message) public returns (uint i) {
         uint currentId = callsCount;
@@ -169,40 +133,6 @@ contract Test {
         return currentId;
     }
 
-    function callGroqLLM(string memory model, string memory message) public returns (uint i) {
-        uint currentId = callsCount;
-        callsCount = currentId + 1;
-
-        llmMessage = IOracle.Message({
-            role: "user",
-            content: new IOracle.Content[](1)
-        });
-        llmMessage.content[0] = IOracle.Content({
-            contentType: "text",
-            value: message
-        });
-        lastResponse = "";
-        lastError = "";
-
-        IOracle(oracleAddress).createGroqLlmCall(
-            currentId,
-            IOracle.GroqRequest({
-                model : model,
-                frequencyPenalty : 21, // > 20 for null
-                logitBias : "", // empty str for null
-                maxTokens : 1000, // 0 for null
-                presencePenalty : 21, // > 20 for null
-                responseFormat : "{\"type\":\"text\"}",
-                seed : 0, // null
-                stop : "", // null
-                temperature : 10, // Example temperature (scaled up, 10 means 1.0), > 20 means null
-                topP : 101, // Percentage 0-100, > 100 means null
-                user : "" // null
-            })
-        );
-
-        return currentId;
-    }
 
     function getMessageHistory(uint /*chatId*/) public view returns (IOracle.Message[] memory) {
         IOracle.Message[] memory messages = new IOracle.Message[](1);
@@ -248,14 +178,7 @@ contract Test {
         lastError = errorMessage;
     }
 
-    function onOracleLlmResponse(
-        uint /*runId*/,
-        IOracle.LlmResponse memory response,
-        string memory errorMessage
-    ) public onlyOracle {
-        lastResponse = response.content;
-        lastError = errorMessage;
-    }
+
 
     function onOracleOpenAiLlmResponse(
         uint /*runId*/,
@@ -266,12 +189,5 @@ contract Test {
         lastError = errorMessage;
     }
 
-    function onOracleGroqLlmResponse(
-        uint /*runId*/,
-        IOracle.GroqResponse memory response,
-        string memory errorMessage
-    ) public onlyOracle {
-        lastResponse = response.content;
-        lastError = errorMessage;
-    }
+
 }
