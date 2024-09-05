@@ -7,7 +7,7 @@ import "./interfaces/IOracle.sol";
 
 // @title Agent
 // @notice This contract interacts with teeML oracle to run agents that perform multiple iterations of querying and responding using a large language model (LLM).
-contract AgentTest4o {
+contract AgentTestLatentSystemPrompt {
 
     string public prompt;
 

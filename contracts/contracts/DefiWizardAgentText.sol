@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "./interfaces/IOracle.sol";
 
-contract DeFiWizardAgent {
+contract DeFiWizardAgentText {
     string public prompt;
     address private owner;
     address public oracleAddress;
@@ -38,7 +38,7 @@ contract DeFiWizardAgent {
             logitBias : "",
             maxTokens : 1000,
             presencePenalty : 21,
-            responseFormat : "{\"type\":\"json_object\"}",
+            responseFormat : "{\"type\":\"text\"}",
             seed : 0,
             stop : "",
             temperature : 10,
