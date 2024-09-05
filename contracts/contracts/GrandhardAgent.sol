@@ -176,3 +176,4 @@ contract GrandhardAgent {
         return newMessage;
     }
 }
+
