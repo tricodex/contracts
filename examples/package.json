@@ -9,7 +9,8 @@
     "chat_anthropic": "ts-node chat_anthropic.ts",
     "agent": "ts-node agent.ts",
     "grandhard_agent": "ts-node grandhardAgent.ts",
-    "defiwizard": "ts-node defiwizardAgent.ts"
+    "defiwizard": "ts-node defiwizardAgent.ts",
+    "ui_designer": "ts-node collaborativeUIDesigner.ts"
 
   },
   "author": "",

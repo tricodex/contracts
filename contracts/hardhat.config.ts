@@ -9,7 +9,7 @@ import "./tasks/functions";
 
 require('dotenv').config()
 
-const galadrielDevnet = []
+const galadrielDevnet: string[] = []
 if (process.env.PRIVATE_KEY_GALADRIEL) {
   galadrielDevnet.push(process.env.PRIVATE_KEY_GALADRIEL)
 }
