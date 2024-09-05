@@ -38,7 +38,7 @@ contract DeFiWizardAgent {
             logitBias : "",
             maxTokens : 1000,
             presencePenalty : 21,
-            responseFormat : "{\"type\":\"json_object\"}",
+            responseFormat : "{\"type\":\"text\"}",
             seed : 0,
             stop : "",
             temperature : 10,

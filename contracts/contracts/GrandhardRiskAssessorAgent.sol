@@ -48,12 +48,12 @@ contract GrandhardRiskAssessorAgent {
             logitBias : "", // empty str for null
             maxTokens : 1000, // 0 for null
             presencePenalty : 21, // > 20 for null
-            responseFormat : "{\"type\":\"json_object\"}",
+            responseFormat : "{\"type\":\"text\"}",
             seed : 0, // null
             stop : "", // null
             temperature : 10, // Example temperature (scaled up, 10 means 1.0), > 20 means null
             topP : 101, // Percentage 0-100, > 100 means null
-            tools : "[]",
+            tools : "[{\"type\":\"function\",\"function\":{\"name\":\"web_search\",\"description\":\"Search the internet\",\"parameters\":{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\",\"description\":\"Search query\"}},\"required\":[\"query\"]}}},{\"type\":\"function\",\"function\":{\"name\":\"image_generation\",\"description\":\"Generates an image using Dalle-2\",\"parameters\":{\"type\":\"object\",\"properties\":{\"prompt\":{\"type\":\"string\",\"description\":\"Dalle-2 prompt to generate an image\"}},\"required\":[\"prompt\"]}}}]",
             toolChoice : "auto", // "none" or "auto"
             user : "" // null
         });
