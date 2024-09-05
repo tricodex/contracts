@@ -43,7 +43,7 @@ contract GrandhardPortfolioManagerAgent {
         prompt = "You are an expert portfolio manager specializing in DeFi and Web3 assets. Analyze portfolios, suggest optimizations, and provide rebalancing strategies. Always consider risk management and diversification in your recommendations.";
 
         config = IOracle.OpenAiRequest({
-            model : "gpt-4o-2024-08-06",
+            model : "gpt-4o",
             frequencyPenalty : 21, // > 20 for null
             logitBias : "", // empty str for null
             maxTokens : 1000, // 0 for null

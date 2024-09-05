@@ -33,7 +33,7 @@ contract RegulatoryExpertAgent {
     // Initialize OpenAI config
     function _initializeConfig() private {
         config = IOracle.OpenAiRequest({
-            model : "gpt-4o-2024-08-06",
+            model : "gpt-4o",
             frequencyPenalty : 21,
             logitBias : "",
             maxTokens : 1000,

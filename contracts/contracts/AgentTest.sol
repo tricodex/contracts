@@ -49,7 +49,7 @@ contract AgentTest {
         prompt = systemPrompt;
 
         config = IOracle.OpenAiRequest({
-            model : "gpt-4o-2024-08-06",
+            model : "gpt-4o",
             frequencyPenalty : 21, // > 20 for null
             logitBias : "", // empty str for null
             maxTokens : 1000, // 0 for null

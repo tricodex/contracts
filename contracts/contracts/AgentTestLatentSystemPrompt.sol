@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+// Uncomment this line to use console.log
+// import "hardhat/console.sol";
 import "./interfaces/IOracle.sol";
 
-// @title GrandhardRiskAssessorAgent
-// @notice This contract interacts with teeML oracle to assess risks in DeFi and Web3 investments.
-contract GrandhardRiskAssessorAgent {
+// @title Agent
+// @notice This contract interacts with teeML oracle to run agents that perform multiple iterations of querying and responding using a large language model (LLM).
+contract AgentTest4o {
 
     string public prompt;
 
@@ -37,10 +39,14 @@ contract GrandhardRiskAssessorAgent {
     IOracle.OpenAiRequest private config;
 
     // @param initialOracleAddress Initial address of the oracle contract
-    constructor(address initialOracleAddress) {
+    // @param systemPrompt Initial prompt for the system message
+    constructor(
+        address initialOracleAddress,         
+        string memory systemPrompt
+    ) {
         owner = msg.sender;
         oracleAddress = initialOracleAddress;
-        prompt = "You are an expert risk assessor for DeFi and Web3 investments. Analyze potential risks, provide detailed risk assessments, and suggest mitigation strategies for various investment scenarios.";
+        prompt = systemPrompt;
 
         config = IOracle.OpenAiRequest({
             model : "gpt-4o",
@@ -48,12 +54,12 @@ contract GrandhardRiskAssessorAgent {
             logitBias : "", // empty str for null
             maxTokens : 1000, // 0 for null
             presencePenalty : 21, // > 20 for null
-            responseFormat : "{\"type\":\"json_object\"}",
+            responseFormat : "{\"type\":\"text\"}",
             seed : 0, // null
             stop : "", // null
             temperature : 10, // Example temperature (scaled up, 10 means 1.0), > 20 means null
             topP : 101, // Percentage 0-100, > 100 means null
-            tools : "[]",
+            tools : "[{\"type\":\"function\",\"function\":{\"name\":\"web_search\",\"description\":\"Search the internet\",\"parameters\":{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\",\"description\":\"Search query\"}},\"required\":[\"query\"]}}},{\"type\":\"function\",\"function\":{\"name\":\"image_generation\",\"description\":\"Generates an image using Dalle-2\",\"parameters\":{\"type\":\"object\",\"properties\":{\"prompt\":{\"type\":\"string\",\"description\":\"Dalle-2 prompt to generate an image\"}},\"required\":[\"prompt\"]}}}]",
             toolChoice : "auto", // "none" or "auto"
             user : "" // null
         });
@@ -74,12 +80,13 @@ contract GrandhardRiskAssessorAgent {
     // @notice Updates the oracle address
     // @param newOracleAddress The new oracle address to set
     function setOracleAddress(address newOracleAddress) public onlyOwner {
+        require(msg.sender == owner, "Caller is not the owner");
         oracleAddress = newOracleAddress;
         emit OracleAddressUpdated(newOracleAddress);
     }
 
     // @notice Starts a new agent run
-    // @param query The initial user query about risk assessment
+    // @param query The initial user query
     // @param max_iterations The maximum number of iterations for the agent run
     // @return The ID of the newly created agent run
     function runAgent(string memory query, uint8 max_iterations) public returns (uint) {
@@ -133,7 +140,35 @@ contract GrandhardRiskAssessorAgent {
             run.messages.push(newMessage);
             run.responsesCount++;
         }
+        if (!compareStrings(response.functionName, "")) {
+            IOracle(oracleAddress).createFunctionCall(runId, response.functionName, response.functionArguments);
+            return;
+        }
         run.is_finished = true;
+    }
+
+    // @notice Handles the response from the oracle for a function call
+    // @param runId The ID of the agent run
+    // @param response The response from the oracle
+    // @param errorMessage Any error message
+    // @dev Called by teeML oracle
+    function onOracleFunctionResponse(
+        uint runId,
+        string memory response,
+        string memory errorMessage
+    ) public onlyOracle {
+        AgentRun storage run = agentRuns[runId];
+        require(!run.is_finished, "Run is finished");
+
+        string memory result = response;
+        if (!compareStrings(errorMessage, "")) {
+            result = errorMessage;
+        }
+
+        IOracle.Message memory newMessage =  createTextMessage("user", result);
+        run.messages.push(newMessage);
+        run.responsesCount++;
+        IOracle(oracleAddress).createOpenAiLlmCall(runId, config);
     }
 
     // @notice Retrieves the message history for a given agent run
