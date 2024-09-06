@@ -1,5 +1,5 @@
 import { Contract, ethers, TransactionReceipt, Wallet } from "ethers";
-import { abi as ABI } from "./abis/ShapeshifterAgent.json";
+import { abi as ABI } from "./abis/SSA.json";
 import * as readline from 'readline';
 import dotenv from 'dotenv';
 import fs from 'fs';
@@ -34,8 +34,8 @@ async function main() {
         const privateKey = process.env.PRIVATE_KEY;
         if (!privateKey) throw Error("Missing PRIVATE_KEY in .env");
 
-        const contractAddress = process.env.SHAPESHIFTER_AGENT_ADDRESS;
-        if (!contractAddress) throw Error("Missing SHAPESHIFTER_AGENT_ADDRESS in .env");
+        const contractAddress = process.env.SSA_CONTRACT_ADDRESS;
+        if (!contractAddress) throw Error("Missing SSA_CONTRACT_ADDRESS in .env");
 
         writeLog(`Connecting to network: ${rpcUrl}`);
         const provider = new ethers.JsonRpcProvider(rpcUrl);

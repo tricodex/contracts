@@ -12,7 +12,12 @@
     "defiwizard": "ts-node defiwizardAgent.ts",
     "ui_designer": "ts-node collaborativeUIDesigner.ts",
     "shapeshift": "ts-node ShapeshifterAgent.ts",
-    "custom": "ts-node customizableAgent.ts"
+    "custom": "ts-node customizableAgent.ts",
+    "ssa": "ts-node ssa.ts",
+    "ssaf": "ts-node ssa-fix.ts",
+    "spagents": "ts-node spagents.ts",
+    "spaoc": "ts-node spagentoraclecompliant.ts",
+    "ssaoc": "ts-node ssaoc.ts"
 
   },
   "author": "",
