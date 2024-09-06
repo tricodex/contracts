@@ -10,7 +10,9 @@
     "agent": "ts-node agent.ts",
     "grandhard_agent": "ts-node grandhardAgent.ts",
     "defiwizard": "ts-node defiwizardAgent.ts",
-    "ui_designer": "ts-node collaborativeUIDesigner.ts"
+    "ui_designer": "ts-node collaborativeUIDesigner.ts",
+    "shapeshift": "ts-node ShapeshifterAgent.ts",
+    "custom": "ts-node customizableAgent.ts"
 
   },
   "author": "",
